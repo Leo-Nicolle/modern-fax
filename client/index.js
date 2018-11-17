@@ -1,3 +1,5 @@
+
+const prompt = require("./prompt");
 const wifi = require("./wifi");
 const client = require("./client");
 const printer = require("./printer");
@@ -8,6 +10,6 @@ wifi.init()
   const text = 'Connected';
   printer.write(text, {spaced: true});
   console.log(text);
-  client.init();
+  client.init();  
 })
 .catch(e => console.log(e));
