@@ -57,8 +57,7 @@ function writeMessage(data){
 			setTimeout(resolve(), 500)
 		}).then(() =>{ 
        		console.log("Retry");
-			// _tryToWrite(text)
-			resolve(true);
+			 _tryToWrite(text);
 		});
 	});
 }
