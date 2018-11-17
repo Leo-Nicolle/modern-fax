@@ -8,7 +8,7 @@ function _tryToWrite(text){
 		    fs.writeFile(path, text, function(err) {
 		        if (err) {
 		        	console.log("did not manage to write");
-		        	reject("ICI" + err);
+		        	reject("did not managed to write" + err);
 		        }
 		        else {
 		        	console.log("write successfull");
@@ -21,11 +21,14 @@ function _tryToWrite(text){
 	});
 }
 
-function write(text, {spaced = false} = {}){
+function write(text, {nb = 0, spaced = false} = {}){
 
 	const textToWrite = spaced 
 		? `${text} \n \n \n`
 		: text;
+	if(nb > 10){
+		throw new Error("10 atemps to wite not successfull")
+	}
 
 	return _tryToWrite(textToWrite)
 	.then (()  => console.log("OK"+ text))	
@@ -35,7 +38,7 @@ function write(text, {spaced = false} = {}){
 			setTimeout(() => resolve(), 1000)
 		}).then(() =>{ 
        		console.log("Retry");
-			write(textToWrite)
+			return write(textToWrite, {nb: nb++})
 		});
 	});
 }
@@ -57,7 +60,6 @@ function writeMessage(data){
 			_tryToWrite(text)
 		});
 	});
-
 }
 
 
@@ -65,6 +67,4 @@ function writeMessage(data){
 module.exports = {
 	write,
 	writeMessage,
-
-
 };

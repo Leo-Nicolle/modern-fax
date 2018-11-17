@@ -95,7 +95,7 @@ function updateSupplicantAndDHCP(ssid, password){
 }
 
 function amIConnected(){
-  exec(`iwconfig 2>&1 | grep ESSID`)
+ return  exec(`iwconfig 2>&1 | grep ESSID`)
   .then(({stdout, stderr}) =>{ 
     const match = stdout.match(/(.*ESSID:)(.*)/);
     return match && match.length > 1 && match[2].length > 2;
