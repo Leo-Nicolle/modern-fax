@@ -1,12 +1,8 @@
-const wifi = require('node-wifi');
 const readline = require('readline');
 const printer = require('./printer');
 const {exec} = require('child-process-promise');
 
 function init(){
-  wifi.init({
-    iface : null,
-  });
     return tryToConnect();
 }
 
