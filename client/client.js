@@ -6,7 +6,6 @@ const printer = require("./printer");
 const prompt = require("./prompt");
 
 const username = "Léo";
-const username = "Bianca";
 
 function getDate () {
     const options = { 
