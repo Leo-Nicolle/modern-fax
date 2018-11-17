@@ -3,7 +3,7 @@ const url = "http://"+(process.argv[3] === "localhost"
     ? process.argv[3]: "51.75.28.38")+ ":5000";
 
 const printer = require("./printer")
-
+const username = "Bianca";
 
 function getDate () {
     const options = { 
@@ -20,7 +20,7 @@ function getDate () {
 }
 function init(){
   const socket = io(url);
-  console.log("username: ",process.argv[2], " url: ", url);
+  console.log("username: ",username, " url: ", url);
 
   function sendMessage(text = "\n"){
       const message = {
@@ -53,14 +53,8 @@ function init(){
 
   socket.on('connect', (data) => {
     console.log("connected to server");
-    socket.emit('user-connect', process.argv[2]);
+    socket.emit('user-connect', username);
   });
-
-  let i = 0;
-  setInterval(() => {
-    i++;
-    sendMessage("Salut! Je suis " + process.argv[2] + i);
-  }, 5000 );
 }
 
 module.exports = {
