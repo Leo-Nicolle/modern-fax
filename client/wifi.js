@@ -1,7 +1,7 @@
 const wifi = require('node-wifi');
 const readline = require('readline');
 const printer = require('./printer');
-
+const {exec} = require('child-process-promise');
 
 function init(){
   wifi.init({
@@ -36,13 +36,14 @@ function showConnections(){
   let networkNames;
   let networkName;
 
-  wifi.scan()
-  .then(networks => {
-    networkNames = networks
-    .filter(network => network.ssid.length)
-    .map((network) => network.ssid);
-
-    const text = networkNames
+  exec('iw dev wlan0 scan | grep SSID')
+  .then(({stdout, stderr}) => {
+      networkNames = stdout.split("\n").map(data => {
+        const match = data.match(/(SSID: )(.*)/)
+        return match && match.length >1 && match[2];
+      }).filter(elt => elt)
+  
+     const text = networkNames
       .slice(0,5)
       .reduce((text, name, i) => `${text}${i}: ${name}\n`, "");
     printer.write(text, {spaced: true});
@@ -58,7 +59,7 @@ function showConnections(){
     }
     return askForUser(`Try to connect to ${networkName}. Password ? `);
   })
-  .then(password =>   wifi.connect({ ssid : networkName, password }))
+  .then(password => updateSupplicantAndDHCP(ssid, password))
   .then(() => amIConnected())
   .then(connected => {
     if(connected){
@@ -79,11 +80,26 @@ function showConnections(){
   });
 }
 
+function updateSupplicantAndDHCP(ssid, password){
+  return  
+  exec(`wpa_passphrase ${ssid} ${password} > /etc/wpa_supplicant/wpa_supplicant.conf`)
+  .then(({stdout, stderr}) => 
+    exec(`iwlist scan`)
+  )
+  .then(({stdout, stderr}) => 
+    exec(`dhclient -r`)
+  )
+  .then(({stdout, stderr}) => 
+    exec(`dhclient wlan0`)
+  );
+}
+
 function amIConnected(){
-    return wifi.getCurrentConnections()
-    .then(currentConnections => {
-      return currentConnections.length;
-    });
+  exec(`iwconfig 2>&1 | grep ESSID`)
+  .then(({stdout, stderr}) =>{ 
+    const match = stdout.match(/(.*ESSID:)(.*)/);
+    return match && match.length > 1 && match[2].length > 2;
+  });
 }
 
 module.exports = {

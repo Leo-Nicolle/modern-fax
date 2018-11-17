@@ -9,8 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "child-process-promise": "^2.2.1",
+    "node-linux-wifi": "0.0.2",
     "node-thermal-printer": "^2.0.0",
-    "node-wifi": "^2.0.4",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
   }
 }
