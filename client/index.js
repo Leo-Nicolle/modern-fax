@@ -5,7 +5,9 @@ const printer = require("./printer");
 // tryes to connect:
 wifi.init()
 .then((connected) => {
-  console.log("wifi connected");
+  const text = 'Connected';
+  printer.write(text, {spaced: true});
+  console.log(text);
   client.init();
 })
 .catch(e => console.log(e));

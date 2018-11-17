@@ -63,9 +63,6 @@ function showConnections(){
   .then(() => amIConnected())
   .then(connected => {
     if(connected){
-      const text = 'Connected';
-      printer.write(text, {spaced: true});
-      console.log(text);
       return true;
     }
     const text = "Not connected, wrong password ?";
