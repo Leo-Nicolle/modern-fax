@@ -5,7 +5,7 @@ const path = "/dev/usb/lp0";
 function _tryToWrite(text){
 	return new Promise((resolve, reject) => {
 		try{
-		    fs.writeFile(path, text, function(err) {
+		    fs.writeFile(path, text,"utf8" function(err) {
 		        if (err) {
 		        	console.log("did not manage to write");
 		        	reject("did not managed to write" + err);
@@ -26,21 +26,21 @@ function write(text, {nb = 0, spaced = false} = {}){
 	const textToWrite = spaced 
 		? `${text} \n \n \n`
 		: text;
-	if(nb > 10){
+	if(nb > 2){
 		throw new Error("10 atemps to wite not successfull")
 	}
 
 	return _tryToWrite(textToWrite)
 	.then (()  => console.log("OK"+ text))	
-	.catch(error => {
-		return new Promise((resolve, reject) => {
-       		console.log("timeout....");
-			setTimeout(() => resolve(), 1000)
-		}).then(() =>{ 
-       		console.log("Retry");
-			return write(textToWrite, {nb: nb++})
-		});
-	});
+	// .catch(error => {
+	// 	return new Promise((resolve, reject) => {
+ //       		console.log("timeout....");
+	// 		setTimeout(() => resolve(), 1000)
+	// 	}).then(() =>{ 
+ //       		console.log("Retry");
+	// 		return write(textToWrite, {nb: nb++})
+	// 	});
+	// });
 }
 
 
@@ -57,7 +57,8 @@ function writeMessage(data){
 			setTimeout(resolve(), 500)
 		}).then(() =>{ 
        		console.log("Retry");
-			_tryToWrite(text)
+			// _tryToWrite(text)
+			resolve(true);
 		});
 	});
 }
