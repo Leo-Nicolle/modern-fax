@@ -1,8 +1,19 @@
-const keypress = require('keypress');
+// const keypress = require('keypress');
+  const readline = require('readline');
 
 let message = "";
 function readUserInput(sendMessage){ 
- 
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.on('line', (input) => {
+  sendMessage(input);
+});
+
+/* 
 // make `process.stdin` begin emitting "keypress" events
 keypress(process.stdin);
  
@@ -24,11 +35,11 @@ process.stdin.on('keypress', function (ch, key) {
  
 process.stdin.setRawMode(true);
 process.stdin.resume();
-
+*/
 }
 
 function stopReadUserInput(){
-   process.stdin.pause();
+   // process.stdin.pause();
 }
 
 module.exports = {
