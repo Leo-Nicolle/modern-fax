@@ -5,7 +5,7 @@ const path = "/dev/usb/lp0";
 function _tryToWrite(text){
 	return new Promise((resolve, reject) => {
 		try{
-		    fs.writeFile(path, text,"utf8" function(err) {
+		    fs.writeFile(path, text,"utf8", function(err) {
 		        if (err) {
 		        	console.log("did not manage to write");
 		        	reject("did not managed to write" + err);
