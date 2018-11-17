@@ -41,11 +41,11 @@ function init(){
 
     socket.on("connect_error", (error) => {
       console.log("connectError", error)
-       printer.write("connectError" + error)
+       // printer.write("connectError" + error)
     });
     socket.on("connect_timeout", (error) => {
       console.log("connectTimeout", error)
-       printer.write("connectTimeout" + error)
+       // printer.write("connectTimeout" + error)
     });
 
 
